@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2023级蜂学1班随机抽签</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f9f9f9;
+            background-image: url('https://www.transparenttextures.com/patterns/cartoon.png');
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff6f61;
+        }
+        #name-display {
+            font-size: 2em;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px dashed #ff6f61;
+            border-radius: 10px;
+            background-color: #fff;
+            display: inline-block;
+            width: 200px;
+            height: 50px;
+            line-height: 50px;
+            overflow: hidden;
+        }
+        #speed-control {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff3b2f;
+        }
+        .highlight {
+            color: #ff6f61;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>2023级蜂学1班随机抽签</h1>
+    <div id="name-display">点击开始</div>
+    <div id="speed-control">
+        <label for="speed">滚动速度:</label>
+        <input type="range" id="speed" name="speed" min="1" max="10" value="5">
+    </div>
+    <button id="start-btn">开始点名</button>
+
+    <script>
+        const names = [
+            "廖时羽", "刘文豪", "张怡", "张诗琪", "崔坤宝", "朱丽莹", "赵宇航", "李叶子", "田文明", "彭辉权",
+            "孙少笛", "陶蕊", "吕代立", "彭宗花", "郭洁", "文鑫", "孙长杰", "毛敏", "孙磊楠", "杜泽宇", 
+            "高红邦", "刘宝莲", "杨伦胄", "何如捷", "王晓婷", "李彤", "张俊劼", "余凤"
+        ];
+
+        let interval;
+        let isRunning = false;
+        const nameDisplay = document.getElementById('name-display');
+        const startBtn = document.getElementById('start-btn');
+        const speedControl = document.getElementById('speed');
+
+        function getRandomName() {
+            return names[Math.floor(Math.random() * names.length)];
+        }
+
+        function startRolling() {
+            if (isRunning) return;
+            isRunning = true;
+            startBtn.textContent = '暂停点名';
+            interval = setInterval(() => {
+                nameDisplay.textContent = getRandomName();
+            }, 1000 / speedControl.value);
+        }
+
+        function stopRolling() {
+            if (!isRunning) return;
+            isRunning = false;
+            startBtn.textContent = '开始点名';
+            clearInterval(interval);
+            nameDisplay.classList.add('highlight');
+        }
+
+        startBtn.addEventListener('click', () => {
+            if (isRunning) {
+                stopRolling();
+            } else {
+                startRolling();
+            }
+        });
+
+        speedControl.addEventListener('input', () => {
+            if (isRunning) {
+                clearInterval(interval);
+                interval = setInterval(() => {
+                    nameDisplay.textContent = getRandomName();
+                }, 1000 / speedControl.value);
+            }
+        });
+    </script>
+</body>
+</html>
